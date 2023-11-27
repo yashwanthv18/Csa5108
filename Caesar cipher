@@ -1,0 +1,32 @@
+#include<stdio.h>
+int main()
+{
+	int k;
+	char pop[100],c;
+	printf("enter the plain text ");
+    gets(pop);
+    printf("enter the key");
+    scanf("%d",&k);
+    for(int i=0;pop[i]!='\0';i++)
+    {
+    	c=pop[i];
+    	if(c>='a' &&c<='z')
+    	{
+    		c=c+k;
+    		if(c>'z')
+    		{
+    			c=c-'z'+'a'-1;
+			}
+			pop[i]=c;
+		}else if(c>='A' && c<'Z')
+		{
+			c=c+k;
+			if(c>'Z')
+			{
+				c=c-'Z'+'A'-1;
+			}
+			pop[i]=c;
+		}
+	}
+	printf("encrypted code=%s",pop);
+}
