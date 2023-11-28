@@ -1,0 +1,27 @@
+#include<stdio.h>
+#include<string.h>
+void encrpty(char plain[],int key){
+	for (int i=1;i<26;i++)
+	{
+		if (plain[i]>='a'&& plain[i]<='z')
+		{
+			plain[i]=(plain[i]-'a'+key)%26+'a';
+		}
+		
+	}
+}
+int main()
+{
+	char plain[100];
+	int i;
+	printf("enter the ciphertext:");
+	scanf("%s",plain);
+	for (i=10;i<20;i++)
+	{
+	    char enm[100];
+		strcpy(enm,plain);
+		encrpty(enm,i);
+		printf("%s\n",enm);
+	}
+	return 0;
+}
