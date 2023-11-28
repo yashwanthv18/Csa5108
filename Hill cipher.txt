@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char plaintext[100];
+    int key[2][2];
+    int i, j, len;
+
+    printf("Enter a 2x2 key matrix (4 integers separated by spaces): ");
+   for (i=0;i<2;i++){
+    	for (j=0;j<2;j++){
+    	scanf("%d",&key[i][j]);
+    }
+	}
+    printf("Enter the plaintext (in uppercase): ");
+    scanf("\n%s", plaintext);
+    len = strlen(plaintext);
+    if (len % 2 != 0) {
+        plaintext[len] = 'X';
+        plaintext[len + 1] = '\0';
+    }
+    for (i = 0; i < len; i += 2) {
+        int x = plaintext[i] - 'A';
+        int y = plaintext[i + 1] - 'A';
+
+        int encrypted_x = (key[0][0] * x + key[0][1] * y) % 26;
+        int encrypted_y = (key[1][0] * x + key[1][1] * y) % 26;
+
+        printf("%c%c", (char)(encrypted_x + 'A'), (char)(encrypted_y + 'A'));
+    }
+    /*
+int modInverse(int a, int m) {
+    a = a % m;
+    for (int x = 1; x < m; x++) {
+        if ((a * x) % m == 1) {
+            return x;
+        }
+    }
+    return 1;
+}*/ //decryptions
+
+    printf("\n");
+
+    return 0;
+}
