@@ -1,0 +1,91 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdbool.h>
+
+#define ALPHABET_SIZE 26
+
+char* generateCipherSequence(const char* keyword) {
+    char* cipherSequence = (char*)malloc((ALPHABET_SIZE + 1) * sizeof(char));
+    bool usedChars[ALPHABET_SIZE] = {false};
+    int keywordLength = strlen(keyword);
+    int currentIndex = 0;
+
+    char uppercaseKeyword[keywordLength + 1];
+    for (int i = 0; i < keywordLength; ++i) {
+        uppercaseKeyword[i] = toupper(keyword[i]);
+    }
+    uppercaseKeyword[keywordLength] = '\0';
+
+    for (int i = 0; i < keywordLength; ++i) {
+        if (!usedChars[uppercaseKeyword[i] - 'A']) {
+            cipherSequence[currentIndex++] = uppercaseKeyword[i];
+            usedChars[uppercaseKeyword[i] - 'A'] = true;
+        }
+    }
+
+    for (char ch = 'A'; ch <= 'Z'; ++ch) {
+        if (!usedChars[ch - 'A']) {
+            cipherSequence[currentIndex++] = ch;
+        }
+    }
+    cipherSequence[ALPHABET_SIZE] = '\0';
+    return cipherSequence;
+}
+
+char* encrypt(const char* plainText, const char* cipherSequence) {
+    int textLength = strlen(plainText);
+    char* encryptedText = (char*)malloc((textLength + 1) * sizeof(char));
+
+    for (int i = 0; i < textLength; ++i) {
+        char currentChar = toupper(plainText[i]);
+        if (isalpha(currentChar)) {
+            int index = currentChar - 'A';
+            encryptedText[i] = cipherSequence[index];
+        } else {
+            encryptedText[i] = currentChar;
+        }
+    }
+    encryptedText[textLength] = '\0';
+    return encryptedText;
+}
+
+char* decrypt(const char* encryptedText, const char* cipherSequence) {
+    int textLength = strlen(encryptedText);
+    char* decryptedText = (char*)malloc((textLength + 1) * sizeof(char));
+
+    for (int i = 0; i < textLength; ++i) {
+        char currentChar = toupper(encryptedText[i]);
+        if (isalpha(currentChar)) {
+            const char* found = strchr(cipherSequence, currentChar);
+            if (found != NULL) {
+                int index = found - cipherSequence;
+                decryptedText[i] = 'A' + index;
+            }
+        } else {
+            decryptedText[i] = currentChar;
+        }
+    }
+    decryptedText[textLength] = '\0';
+    return decryptedText;
+}
+
+int main() {
+    const char* keyword = "CIPHER";
+    char* cipherSequence = generateCipherSequence(keyword);
+
+    const char* plainText = "hello world";
+    char* encryptedText = encrypt(plainText, cipherSequence);
+    char* decryptedText = decrypt(encryptedText, cipherSequence);
+
+    printf("Plain Text: %s\n", plainText);
+    printf("Cipher: %s\n", encryptedText);
+    printf("Decrypted Text: %s\n", decryptedText);
+
+    free(cipherSequence);
+    free(encryptedText);
+    free(decryptedText);
+
+    return 0;
+}
