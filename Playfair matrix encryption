@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define MATRIX_SIZE 5
+
+char* createPlayfairMatrix(const char* key) {
+    char* matrix = (char*)malloc(MATRIX_SIZE * MATRIX_SIZE * sizeof(char));
+
+    int index = 0;
+    bool usedChars[26] = { false };
+
+    for (int i = 0; i < strlen(key); ++i) {
+        if (key[i] != 'J' && !usedChars[key[i] - 'A']) {
+            matrix[index++] = key[i];
+            usedChars[key[i] - 'A'] = true;
+        }
+    }
+
+    for (char ch = 'A'; ch <= 'Z'; ++ch) {
+        if (ch != 'J' && !usedChars[ch - 'A']) {
+            matrix[index++] = ch;
+        }
+    }
+
+    return matrix;
+}
+
+void encryptMessage(char* matrix, const char* message, char* encrypted) {
+}
+
+int main() {
+    const char* key = "MFHIJKUNOPQZVWXYELARGDSTBC";
+    char* matrix = createPlayfairMatrix(key);
+
+    const char* message = "MUSTSEEYOUOVERCADOGANWESTCOMINGATONCE";
+    char encrypted[1000];
+    encryptMessage(matrix, message, encrypted);
+
+    printf("Original Message: %s\n", message);
+    printf("Encrypted Message: %s\n", encrypted);
+
+    free(matrix);
+
+    return 0;
+}
